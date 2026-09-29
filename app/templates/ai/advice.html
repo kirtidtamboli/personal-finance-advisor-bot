@@ -2,8 +2,80 @@
 {% block title %}AI Advisor{% end block %}
 
 {% block content %}
-<div class="card">
-    <h2>AI Financial Advisor</h2>
-    <p>Loading your advice...</p>
+<div class="dashboard-header" style="display: flex; justify-content: space-between; align-items: center;">
+    <div>
+        <h2>AI Financial Advisor</h2>
+        <p>Your personalized insights for {{ month }}/{{ year }}</p>
+    </div>
+    <a href="{{ url_for('dashboard.main_dashboard') }}" class="btn btn-secondary">Back to Dashboard</a>
 </div>
+
+<div class="alert alert-info">
+    <strong>Disclaimer:</strong> The AI provides informational guidance and is not a substitute for a qualified financial professional. 
+    It cannot make investment promises or guarantee returns.
+</div>
+
+{% if advice.error %}
+    <div class="alert alert-danger">
+        {{ advice.error }}
+    </div>
+{% else %}
+    <div class="card">
+        <h3>Summary</h3>
+        <p>{{ advice.summary }}</p>
+    </div>
+    
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+        <div class="card">
+            <h3>Financial Health</h3>
+            <p style="font-weight: bold; color: var(--primary-color);">{{ advice.financial_health }}</p>
+        </div>
+        <div class="card">
+            <h3>Emergency Fund Guidance</h3>
+            <p>{{ advice.emergency_fund_guidance }}</p>
+        </div>
+    </div>
+    
+    <div class="card">
+        <h3>Budget & Savings Recommendations</h3>
+        {% if advice.overspending_categories %}
+            <h4 style="color: var(--danger);">Overspending Detected In:</h4>
+            <ul>
+                {% for cat in advice.overspending_categories %}
+                    <li>{{ cat }}</li>
+                {% end for %}
+            </ul>
+        {% endif %}
+        
+        <h4>Budget Advice</h4>
+        <ul>
+            {% for item in advice.budget_recommendations %}
+                <li>{{ item }}</li>
+            {% end for %}
+        </ul>
+        
+        <h4>Savings Strategy</h4>
+        <ul>
+            {% for item in advice.saving_recommendations %}
+                <li>{{ item }}</li>
+            {% end for %}
+        </ul>
+        
+        <h4>Goal Progress</h4>
+        <ul>
+            {% for item in advice.goal_recommendations %}
+                <li>{{ item }}</li>
+            {% end for %}
+        </ul>
+    </div>
+    
+    <div class="card">
+        <h3>Action Plan for Next Month</h3>
+        <ul style="list-style-type: decimal;">
+            {% for action in advice.next_month_actions %}
+                <li><strong>{{ action }}</strong></li>
+            {% end for %}
+        </ul>
+    </div>
+{% endif %}
 {% end block %}
