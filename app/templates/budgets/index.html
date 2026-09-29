@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% block title %}Budgets{% end block %}
+
+{% block content %}
+<div class="dashboard-header" style="display: flex; justify-content: space-between; align-items: center;">
+    <div>
+        <h2>Budgets - {{ month }}/{{ year }}</h2>
+        <form method="GET" action="" style="display: inline-block; margin-top: 0.5rem;">
+            <select name="month" onchange="this.form.submit()" class="form-control" style="width: auto; display: inline-block; padding: 0.25rem;">
+                {% for m in range(1, 13) %}
+                    <option value="{{ m }}" {% if m == month %}selected{% endif %}>Month {{ m }}</option>
+                {% end for %}
+            </select>
+            <select name="year" onchange="this.form.submit()" class="form-control" style="width: auto; display: inline-block; padding: 0.25rem;">
+                {% for y in range(2020, 2030) %}
+                    <option value="{{ y }}" {% if y == year %}selected{% endif %}>{{ y }}</option>
+                {% end for %}
+            </select>
+        </form>
+    </div>
+    <a href="{{ url_for('budgets.add') }}" class="btn btn-primary">Create Budget</a>
+</div>
+
+<div class="card">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Category</th>
+                <th>Budgeted</th>
+                <th>Spent</th>
+                <th>Remaining</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in budget_data %}
+            <tr>
+                <td>{{ item.budget.category.name }}</td>
+                <td>₹{{ "%.2f"|format(item.budget.allocated_amount) }}</td>
+                <td>₹{{ "%.2f"|format(item.spent) }}</td>
+                <td>
+                    <span style="color: {% if item.is_over %}var(--danger){% else %}var(--success){% endif %}; font-weight: bold;">
+                        ₹{{ "%.2f"|format(item.remaining) }}
+                    </span>
+                </td>
+                <td>
+                    <div style="width: 100%; background-color: #e5e7eb; border-radius: 9999px; height: 0.5rem; margin-top: 0.25rem;">
+                        <div style="background-color: {% if item.is_over %}var(--danger){% else %}var(--primary-color){% endif %}; height: 0.5rem; border-radius: 9999px; width: {{ item.percentage }}%; max-width: 100%;"></div>
+                    </div>
+                    <small>{{ "%.1f"|format(item.percentage) }}% Used</small>
+                </td>
+                <td>
+                    <a href="{{ url_for('budgets.edit', id=item.budget.id) }}" class="btn btn-secondary btn-sm">Edit</a>
+                    <form action="{{ url_for('budgets.delete', id=item.budget.id) }}" method="POST" style="display:inline;">
+                        <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure?')">Delete</button>
+                    </form>
+                </td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="6" class="text-center">No budgets set for this month.</td>
+            </tr>
+            {% end for %}
+        </tbody>
+    </table>
+</div>
+{% end block %}

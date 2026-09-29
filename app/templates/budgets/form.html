@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% block title %}{{ title }}{% end block %}
+
+{% block content %}
+<div class="auth-container" style="max-width: 600px;">
+    <h2>{{ title }}</h2>
+    <form method="POST" action="" class="auth-form">
+        {{ form.hidden_tag() }}
+        
+        <div class="form-group">
+            {{ form.category_id.label(class="form-label") }}
+            {% if form.category_id.errors %}
+                {{ form.category_id(class="form-control is-invalid") }}
+                <div class="invalid-feedback">
+                    {% for error in form.category_id.errors %}
+                        <span>{{ error }}</span>
+                    {% end for %}
+                </div>
+            {% else %}
+                {{ form.category_id(class="form-control") }}
+            {% endif %}
+        </div>
+
+        <div style="display: flex; gap: 1rem;">
+            <div class="form-group" style="flex: 1;">
+                {{ form.month.label(class="form-label") }}
+                {% if form.month.errors %}
+                    {{ form.month(class="form-control is-invalid") }}
+                    <div class="invalid-feedback">
+                        {% for error in form.month.errors %}
+                            <span>{{ error }}</span>
+                        {% end for %}
+                    </div>
+                {% else %}
+                    {{ form.month(class="form-control") }}
+                {% endif %}
+            </div>
+
+            <div class="form-group" style="flex: 1;">
+                {{ form.year.label(class="form-label") }}
+                {% if form.year.errors %}
+                    {{ form.year(class="form-control is-invalid") }}
+                    <div class="invalid-feedback">
+                        {% for error in form.year.errors %}
+                            <span>{{ error }}</span>
+                        {% end for %}
+                    </div>
+                {% else %}
+                    {{ form.year(class="form-control") }}
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="form-group">
+            {{ form.allocated_amount.label(class="form-label") }}
+            {% if form.allocated_amount.errors %}
+                {{ form.allocated_amount(class="form-control is-invalid") }}
+                <div class="invalid-feedback">
+                    {% for error in form.allocated_amount.errors %}
+                        <span>{{ error }}</span>
+                    {% end for %}
+                </div>
+            {% else %}
+                {{ form.allocated_amount(class="form-control") }}
+            {% endif %}
+        </div>
+
+        <div class="form-group">
+            {{ form.submit(class="btn btn-primary btn-block") }}
+        </div>
+    </form>
+    <div style="margin-top: 1rem; text-align: center;">
+        <a href="{{ url_for('budgets.index') }}">Cancel</a>
+    </div>
+</div>
+{% end block %}

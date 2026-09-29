@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block title %}Savings Goals{% end block %}
+
+{% block content %}
+<div class="dashboard-header" style="display: flex; justify-content: space-between; align-items: center;">
+    <div>
+        <h2>Savings Goals</h2>
+    </div>
+    <a href="{{ url_for('goals.add') }}" class="btn btn-primary">Create Goal</a>
+</div>
+
+<div class="dashboard-widgets">
+    {% for item in goal_data %}
+    <div class="widget">
+        <h3 style="margin-bottom: 0.5rem; font-size: 1.25rem;">{{ item.goal.name }}</h3>
+        <p style="margin: 0; color: var(--text-muted);">
+            ₹{{ "%.2f"|format(item.goal.current_amount) }} / ₹{{ "%.2f"|format(item.goal.target_amount) }}
+        </p>
+        
+        <div style="width: 100%; background-color: #e5e7eb; border-radius: 9999px; height: 0.75rem; margin-top: 1rem; margin-bottom: 0.5rem;">
+            <div style="background-color: var(--success); height: 0.75rem; border-radius: 9999px; width: {{ item.percentage }}%; max-width: 100%;"></div>
+        </div>
+        <div style="display: flex; justify-content: space-between; font-size: 0.875rem;">
+            <span>{{ "%.1f"|format(item.percentage) }}%</span>
+            {% if item.goal.deadline %}
+            <span>Target: {{ item.goal.deadline.strftime('%Y-%m-%d') }}</span>
+            {% endif %}
+        </div>
+        
+        <div style="margin-top: 1.5rem; display: flex; gap: 0.5rem;">
+            <a href="{{ url_for('goals.edit', id=item.goal.id) }}" class="btn btn-secondary btn-sm">Update</a>
+            <form action="{{ url_for('goals.delete', id=item.goal.id) }}" method="POST" style="margin: 0;">
+                <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure?')">Delete</button>
+            </form>
+        </div>
+    </div>
+    {% else %}
+    <div class="widget" style="grid-column: 1 / -1; text-align: center; padding: 3rem;">
+        <p>No savings goals set yet.</p>
+        <a href="{{ url_for('goals.add') }}" class="btn btn-primary" style="margin-top: 1rem;">Create Your First Goal</a>
+    </div>
+    {% end for %}
+</div>
+{% end block %}

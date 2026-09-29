@@ -32,5 +32,11 @@ def create_app(config_name='default'):
     
     from app.routes.expenses import expenses_bp
     app.register_blueprint(expenses_bp)
+    
+    from app.routes.budgets import budgets_bp
+    app.register_blueprint(budgets_bp)
+    
+    from app.routes.goals import goals_bp
+    app.register_blueprint(goals_bp)
 
     return app
