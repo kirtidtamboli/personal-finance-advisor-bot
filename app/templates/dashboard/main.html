@@ -31,7 +31,7 @@
     </div>
 </div>
 
-<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 2rem;">
+<div class="grid-2" style="margin-top: 2rem;">
     <div class="card">
         <h3>Income vs Expenses</h3>
         <canvas id="incomeExpenseChart"></canvas>
@@ -44,34 +44,36 @@
 
 <div class="card" style="margin-top: 2rem;">
     <h3>Budget Utilization</h3>
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Category</th>
-                <th>Budgeted</th>
-                <th>Spent</th>
-                <th>Status</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for b in budgets %}
-            <tr>
-                <td>{{ b.category }}</td>
-                <td>₹{{ "%.2f"|format(b.budgeted) }}</td>
-                <td>₹{{ "%.2f"|format(b.spent) }}</td>
-                <td>
-                    <span style="color: {% if b.is_over %}var(--danger){% else %}var(--success){% endif %};">
-                        {% if b.is_over %}Over by ₹{{ "%.2f"|format(b.spent - b.budgeted) }}{% else %}Under by ₹{{ "%.2f"|format(b.remaining) }}{% endif %}
-                    </span>
-                </td>
-            </tr>
-            {% else %}
-            <tr>
-                <td colspan="4" class="text-center">No budgets created for this month.</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+    <div class="table-responsive">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Category</th>
+                    <th>Budgeted</th>
+                    <th>Spent</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for b in budgets %}
+                <tr>
+                    <td>{{ b.category }}</td>
+                    <td>₹{{ "%.2f"|format(b.budgeted) }}</td>
+                    <td>₹{{ "%.2f"|format(b.spent) }}</td>
+                    <td>
+                        <span style="color: {% if b.is_over %}var(--danger){% else %}var(--success){% endif %};">
+                            {% if b.is_over %}Over by ₹{{ "%.2f"|format(b.spent - b.budgeted) }}{% else %}Under by ₹{{ "%.2f"|format(b.remaining) }}{% endif %}
+                        </span>
+                    </td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="4" class="text-center">No budgets created for this month.</td>
+                </tr>
+                {% end for %}
+            </tbody>
+        </table>
+    </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>

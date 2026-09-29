@@ -55,16 +55,42 @@ Format the response strictly as a JSON object with the following keys:
         if not api_key:
             return {"error": "AI insights are temporarily unavailable (Missing API Key). Your financial calculations and tracking are still available."}
             
+        import time
         try:
             client = genai.Client(api_key=api_key)
-            response = client.models.generate_content(
-                model='gemini-2.5-flash',
-                contents=prompt,
-                config=types.GenerateContentConfig(
-                    response_mime_type="application/json",
-                ),
-            )
-            return json.loads(response.text)
+            
+            # Add simple retry logic for 503 errors
+            max_retries = 5
+            for attempt in range(max_retries):
+                try:
+                    response = client.models.generate_content(
+                        model='gemini-3.8-flash',
+                        contents=prompt,
+                        config=types.GenerateContentConfig(
+                            response_mime_type="application/json",
+                        ),
+                    )
+                    return json.loads(response.text)
+                except Exception as e:
+                    if "503" in str(e) and attempt < max_retries - 1:
+                        time.sleep(3)  # Wait 3 seconds between retries during high load
+                        continue
+                    raise e
+                    
         except Exception as e:
+            # Return a graceful mock fallback so the UI still looks nice if the API is totally down or quota exceeded
+            error_str = str(e)
+            if "503" in error_str or "429" in error_str:
+                message = "Google's Gemini AI servers are currently experiencing extreme high demand." if "503" in error_str else "You have temporarily exceeded your Google Gemini free tier API quota."
+                return {
+                    "summary": f"{message} Here is a generic placeholder summary so you can preview the UI.",
+                    "financial_health": "Unknown (API Offline)",
+                    "overspending_categories": ["AI API Limit Reached"],
+                    "budget_recommendations": ["The AI is currently resting due to API rate limits. Please check back later!"],
+                    "saving_recommendations": ["Save your energy and try again in a little while."],
+                    "goal_recommendations": ["Goal 1: Successfully connect to Gemini when quota resets."],
+                    "emergency_fund_guidance": "In emergencies like server outages, patience is the best fund.",
+                    "next_month_actions": ["Try requesting advice again later when your API limit resets.", "Continue tracking your finances manually in the meantime."]
+                }
             # Fallback failsafe
             return {"error": f"AI insights are temporarily unavailable. Your financial calculations and tracking are still available. (Error: {str(e)})"}
