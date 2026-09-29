@@ -2,22 +2,133 @@
 {% block title %}Dashboard{% end block %}
 
 {% block content %}
-<div class="dashboard-header">
-    <h2>Dashboard</h2>
-    <p>Welcome back, {{ current_user.name }}!</p>
+<div class="dashboard-header" style="display: flex; justify-content: space-between; align-items: center;">
+    <div>
+        <h2>Dashboard</h2>
+        <p>Welcome back, {{ current_user.name }}! Here is your summary for {{ month }}/{{ year }}</p>
+    </div>
+    <a href="{{ url_for('ai.advice') }}" class="btn btn-primary" style="background-color: #8b5cf6;">Ask AI Advisor</a>
 </div>
+
 <div class="dashboard-widgets">
     <div class="widget">
         <h3>Income</h3>
-        <p class="amount">₹0</p>
+        <p class="amount" style="color: var(--success);">₹{{ "%.2f"|format(total_income) }}</p>
     </div>
     <div class="widget">
         <h3>Expenses</h3>
-        <p class="amount">₹0</p>
+        <p class="amount" style="color: var(--danger);">₹{{ "%.2f"|format(total_expenses) }}</p>
     </div>
     <div class="widget">
         <h3>Savings</h3>
-        <p class="amount">₹0</p>
+        <p class="amount">₹{{ "%.2f"|format(total_savings) }}</p>
+        <small>Savings Rate: {{ "%.1f"|format(savings_rate) }}%</small>
+    </div>
+    <div class="widget">
+        <h3>Top Expense</h3>
+        <p class="amount" style="font-size: 1.5rem;">{{ top_category }}</p>
+        <small>₹{{ "%.2f"|format(top_category_amount) }}</small>
     </div>
 </div>
+
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 2rem;">
+    <div class="card">
+        <h3>Income vs Expenses</h3>
+        <canvas id="incomeExpenseChart"></canvas>
+    </div>
+    <div class="card">
+        <h3>Category Breakdown</h3>
+        <canvas id="categoryChart"></canvas>
+    </div>
+</div>
+
+<div class="card" style="margin-top: 2rem;">
+    <h3>Budget Utilization</h3>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Category</th>
+                <th>Budgeted</th>
+                <th>Spent</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for b in budgets %}
+            <tr>
+                <td>{{ b.category }}</td>
+                <td>₹{{ "%.2f"|format(b.budgeted) }}</td>
+                <td>₹{{ "%.2f"|format(b.spent) }}</td>
+                <td>
+                    <span style="color: {% if b.is_over %}var(--danger){% else %}var(--success){% endif %};">
+                        {% if b.is_over %}Over by ₹{{ "%.2f"|format(b.spent - b.budgeted) }}{% else %}Under by ₹{{ "%.2f"|format(b.remaining) }}{% endif %}
+                    </span>
+                </td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="4" class="text-center">No budgets created for this month.</td>
+            </tr>
+            {% end for %}
+        </tbody>
+    </table>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    // Income vs Expense Chart
+    const ctx1 = document.getElementById('incomeExpenseChart').getContext('2d');
+    new Chart(ctx1, {
+        type: 'bar',
+        data: {
+            labels: ['Income', 'Expenses', 'Savings'],
+            datasets: [{
+                label: 'Amount (₹)',
+                data: [{{ total_income }}, {{ total_expenses }}, {{ total_savings }}],
+                backgroundColor: [
+                    'rgba(16, 185, 129, 0.6)',
+                    'rgba(239, 68, 68, 0.6)',
+                    'rgba(79, 70, 229, 0.6)'
+                ],
+                borderColor: [
+                    'rgb(16, 185, 129)',
+                    'rgb(239, 68, 68)',
+                    'rgb(79, 70, 229)'
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: { beginAtZero: true }
+            }
+        }
+    });
+
+    // Category Chart
+    const ctx2 = document.getElementById('categoryChart').getContext('2d');
+    const categories = [
+        {% for cat, amt in cat_expenses.items() %}
+            "{{ cat }}",
+        {% end for %}
+    ];
+    const amounts = [
+        {% for cat, amt in cat_expenses.items() %}
+            {{ amt }},
+        {% end for %}
+    ];
+    
+    new Chart(ctx2, {
+        type: 'doughnut',
+        data: {
+            labels: categories,
+            datasets: [{
+                data: amounts,
+                backgroundColor: [
+                    '#4f46e5', '#8b5cf6', '#ec4899', '#f43f5e', '#f97316', '#eab308', '#22c55e', '#14b8a6', '#0ea5e9'
+                ]
+            }]
+        }
+    });
+</script>
 {% end block %}

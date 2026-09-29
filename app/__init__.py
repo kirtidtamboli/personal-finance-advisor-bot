@@ -38,5 +38,8 @@ def create_app(config_name='default'):
     
     from app.routes.goals import goals_bp
     app.register_blueprint(goals_bp)
+    
+    from app.routes.ai import ai_bp
+    app.register_blueprint(ai_bp)
 
     return app
