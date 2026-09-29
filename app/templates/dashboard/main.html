@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}Dashboard{% end block %}
+
+{% block content %}
+<div class="dashboard-header">
+    <h2>Dashboard</h2>
+    <p>Welcome back, {{ current_user.name }}!</p>
+</div>
+<div class="dashboard-widgets">
+    <div class="widget">
+        <h3>Income</h3>
+        <p class="amount">₹0</p>
+    </div>
+    <div class="widget">
+        <h3>Expenses</h3>
+        <p class="amount">₹0</p>
+    </div>
+    <div class="widget">
+        <h3>Savings</h3>
+        <p class="amount">₹0</p>
+    </div>
+</div>
+{% end block %}
