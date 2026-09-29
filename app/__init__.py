@@ -26,5 +26,11 @@ def create_app(config_name='default'):
     
     from app.routes.dashboard import dashboard as dashboard_blueprint
     app.register_blueprint(dashboard_blueprint)
+    
+    from app.routes.income import income_bp
+    app.register_blueprint(income_bp)
+    
+    from app.routes.expenses import expenses_bp
+    app.register_blueprint(expenses_bp)
 
     return app

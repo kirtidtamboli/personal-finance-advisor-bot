@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% block title %}Categories{% end block %}
+
+{% block content %}
+<div class="dashboard-header" style="display: flex; justify-content: space-between; align-items: center;">
+    <div>
+        <h2>Expense Categories</h2>
+    </div>
+    <a href="{{ url_for('expenses.index') }}" class="btn btn-secondary">Back to Expenses</a>
+</div>
+
+<div style="display: grid; grid-template-columns: 1fr 2fr; gap: 2rem;">
+    <!-- Add Category Form -->
+    <div class="card">
+        <h3>Add Custom Category</h3>
+        <form method="POST" action="">
+            {{ form.hidden_tag() }}
+            <div class="form-group">
+                {{ form.name.label(class="form-label") }}
+                {% if form.name.errors %}
+                    {{ form.name(class="form-control is-invalid") }}
+                    <div class="invalid-feedback">
+                        {% for error in form.name.errors %}
+                            <span>{{ error }}</span>
+                        {% end for %}
+                    </div>
+                {% else %}
+                    {{ form.name(class="form-control") }}
+                {% endif %}
+            </div>
+            <div class="form-group">
+                {{ form.submit(class="btn btn-primary btn-block") }}
+            </div>
+        </form>
+    </div>
+
+    <!-- Category List -->
+    <div class="card">
+        <h3>Your Categories</h3>
+        <ul style="list-style-type: none; padding: 0;">
+            {% for cat in default_categories %}
+                <li style="padding: 0.5rem; border-bottom: 1px solid #eee;">
+                    <strong>{{ cat.name }}</strong> (Default)
+                </li>
+            {% end for %}
+            {% for cat in user_categories %}
+                <li style="padding: 0.5rem; border-bottom: 1px solid #eee;">
+                    <strong>{{ cat.name }}</strong> (Custom)
+                </li>
+            {% end for %}
+        </ul>
+    </div>
+</div>
+{% end block %}
