@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% block title %}Register{% end block %}
+{% block title %}Register{% endblock %}
 
 {% block content %}
 <div class="auth-container">
@@ -14,7 +14,7 @@
                 <div class="invalid-feedback">
                     {% for error in form.name.errors %}
                         <span>{{ error }}</span>
-                    {% end for %}
+                    {% endfor %}
                 </div>
             {% else %}
                 {{ form.name(class="form-control") }}
@@ -28,7 +28,7 @@
                 <div class="invalid-feedback">
                     {% for error in form.email.errors %}
                         <span>{{ error }}</span>
-                    {% end for %}
+                    {% endfor %}
                 </div>
             {% else %}
                 {{ form.email(class="form-control") }}
@@ -42,7 +42,7 @@
                 <div class="invalid-feedback">
                     {% for error in form.password.errors %}
                         <span>{{ error }}</span>
-                    {% end for %}
+                    {% endfor %}
                 </div>
             {% else %}
                 {{ form.password(class="form-control") }}
@@ -56,7 +56,7 @@
                 <div class="invalid-feedback">
                     {% for error in form.confirm_password.errors %}
                         <span>{{ error }}</span>
-                    {% end for %}
+                    {% endfor %}
                 </div>
             {% else %}
                 {{ form.confirm_password(class="form-control") }}
@@ -71,4 +71,4 @@
         <p>Already have an account? <a href="{{ url_for('auth.login') }}">Login here</a></p>
     </div>
 </div>
-{% end block %}
+{% endblock %}

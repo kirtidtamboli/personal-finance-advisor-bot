@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% block title %}Dashboard{% end block %}
+{% block title %}Dashboard{% endblock %}
 
 {% block content %}
 <div class="dashboard-header" style="display: flex; justify-content: space-between; align-items: center;">
@@ -69,7 +69,7 @@
             <tr>
                 <td colspan="4" class="text-center">No budgets created for this month.</td>
             </tr>
-            {% end for %}
+            {% endfor %}
         </tbody>
     </table>
 </div>
@@ -110,12 +110,12 @@
     const categories = [
         {% for cat, amt in cat_expenses.items() %}
             "{{ cat }}",
-        {% end for %}
+        {% endfor %}
     ];
     const amounts = [
         {% for cat, amt in cat_expenses.items() %}
             {{ amt }},
-        {% end for %}
+        {% endfor %}
     ];
     
     new Chart(ctx2, {
@@ -131,4 +131,4 @@
         }
     });
 </script>
-{% end block %}
+{% endblock %}

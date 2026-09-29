@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% block title %}{{ title }}{% end block %}
+{% block title %}{{ title }}{% endblock %}
 
 {% block content %}
 <div class="auth-container" style="max-width: 600px;">
@@ -14,7 +14,7 @@
                 <div class="invalid-feedback">
                     {% for error in form.category_id.errors %}
                         <span>{{ error }}</span>
-                    {% end for %}
+                    {% endfor %}
                 </div>
             {% else %}
                 {{ form.category_id(class="form-control") }}
@@ -28,7 +28,7 @@
                 <div class="invalid-feedback">
                     {% for error in form.amount.errors %}
                         <span>{{ error }}</span>
-                    {% end for %}
+                    {% endfor %}
                 </div>
             {% else %}
                 {{ form.amount(class="form-control") }}
@@ -42,7 +42,7 @@
                 <div class="invalid-feedback">
                     {% for error in form.date.errors %}
                         <span>{{ error }}</span>
-                    {% end for %}
+                    {% endfor %}
                 </div>
             {% else %}
                 {{ form.date(class="form-control", type="date") }}
@@ -56,7 +56,7 @@
                 <div class="invalid-feedback">
                     {% for error in form.description.errors %}
                         <span>{{ error }}</span>
-                    {% end for %}
+                    {% endfor %}
                 </div>
             {% else %}
                 {{ form.description(class="form-control") }}
@@ -70,7 +70,7 @@
                 <div class="invalid-feedback">
                     {% for error in form.payment_method.errors %}
                         <span>{{ error }}</span>
-                    {% end for %}
+                    {% endfor %}
                 </div>
             {% else %}
                 {{ form.payment_method(class="form-control") }}
@@ -85,4 +85,4 @@
         <a href="{{ url_for('expenses.index') }}">Cancel</a>
     </div>
 </div>
-{% end block %}
+{% endblock %}

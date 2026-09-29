@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% block title %}Savings Goals{% end block %}
+{% block title %}Savings Goals{% endblock %}
 
 {% block content %}
 <div class="dashboard-header" style="display: flex; justify-content: space-between; align-items: center;">
@@ -39,6 +39,6 @@
         <p>No savings goals set yet.</p>
         <a href="{{ url_for('goals.add') }}" class="btn btn-primary" style="margin-top: 1rem;">Create Your First Goal</a>
     </div>
-    {% end for %}
+    {% endfor %}
 </div>
-{% end block %}
+{% endblock %}

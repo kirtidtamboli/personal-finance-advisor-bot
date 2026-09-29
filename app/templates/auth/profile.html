@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% block title %}Profile{% end block %}
+{% block title %}Profile{% endblock %}
 
 {% block content %}
 <div class="auth-container">
@@ -14,7 +14,7 @@
                 <div class="invalid-feedback">
                     {% for error in form.name.errors %}
                         <span>{{ error }}</span>
-                    {% end for %}
+                    {% endfor %}
                 </div>
             {% else %}
                 {{ form.name(class="form-control") }}
@@ -28,7 +28,7 @@
                 <div class="invalid-feedback">
                     {% for error in form.email.errors %}
                         <span>{{ error }}</span>
-                    {% end for %}
+                    {% endfor %}
                 </div>
             {% else %}
                 {{ form.email(class="form-control") }}
@@ -40,4 +40,4 @@
         </div>
     </form>
 </div>
-{% end block %}
+{% endblock %}

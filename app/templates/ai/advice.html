@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% block title %}AI Advisor{% end block %}
+{% block title %}AI Advisor{% endblock %}
 
 {% block content %}
 <div class="dashboard-header" style="display: flex; justify-content: space-between; align-items: center;">
@@ -43,7 +43,7 @@
             <ul>
                 {% for cat in advice.overspending_categories %}
                     <li>{{ cat }}</li>
-                {% end for %}
+                {% endfor %}
             </ul>
         {% endif %}
         
@@ -51,21 +51,21 @@
         <ul>
             {% for item in advice.budget_recommendations %}
                 <li>{{ item }}</li>
-            {% end for %}
+            {% endfor %}
         </ul>
         
         <h4>Savings Strategy</h4>
         <ul>
             {% for item in advice.saving_recommendations %}
                 <li>{{ item }}</li>
-            {% end for %}
+            {% endfor %}
         </ul>
         
         <h4>Goal Progress</h4>
         <ul>
             {% for item in advice.goal_recommendations %}
                 <li>{{ item }}</li>
-            {% end for %}
+            {% endfor %}
         </ul>
     </div>
     
@@ -74,8 +74,8 @@
         <ul style="list-style-type: decimal;">
             {% for action in advice.next_month_actions %}
                 <li><strong>{{ action }}</strong></li>
-            {% end for %}
+            {% endfor %}
         </ul>
     </div>
 {% endif %}
-{% end block %}
+{% endblock %}

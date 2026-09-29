@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% block title %}Report - {{ report.month }}/{{ report.year }}{% end block %}
+{% block title %}Report - {{ report.month }}/{{ report.year }}{% endblock %}
 
 {% block content %}
 <div class="dashboard-header" style="display: flex; justify-content: space-between; align-items: center;">
@@ -46,7 +46,7 @@
                     <span>{{ cat }}</span>
                     <strong>₹{{ "%.2f"|format(amt) }}</strong>
                 </li>
-            {% end for %}
+            {% endfor %}
         </ul>
     </div>
     <div class="card">
@@ -61,7 +61,7 @@
                         </span>
                     </div>
                 </li>
-            {% end for %}
+            {% endfor %}
         </ul>
     </div>
 </div>
@@ -73,4 +73,4 @@
         .card { box-shadow: none; border: 1px solid #ddd; }
     }
 </style>
-{% end block %}
+{% endblock %}

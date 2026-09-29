@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% block title %}Categories{% end block %}
+{% block title %}Categories{% endblock %}
 
 {% block content %}
 <div class="dashboard-header" style="display: flex; justify-content: space-between; align-items: center;">
@@ -22,7 +22,7 @@
                     <div class="invalid-feedback">
                         {% for error in form.name.errors %}
                             <span>{{ error }}</span>
-                        {% end for %}
+                        {% endfor %}
                     </div>
                 {% else %}
                     {{ form.name(class="form-control") }}
@@ -42,13 +42,13 @@
                 <li style="padding: 0.5rem; border-bottom: 1px solid #eee;">
                     <strong>{{ cat.name }}</strong> (Default)
                 </li>
-            {% end for %}
+            {% endfor %}
             {% for cat in user_categories %}
                 <li style="padding: 0.5rem; border-bottom: 1px solid #eee;">
                     <strong>{{ cat.name }}</strong> (Custom)
                 </li>
-            {% end for %}
+            {% endfor %}
         </ul>
     </div>
 </div>
-{% end block %}
+{% endblock %}
