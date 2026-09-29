@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% block title %}Monthly Reports{% end block %}
+
+{% block content %}
+<div class="dashboard-header" style="display: flex; justify-content: space-between; align-items: center;">
+    <div>
+        <h2>Monthly Reports</h2>
+        <p>View your past financial summaries</p>
+    </div>
+    <form action="{{ url_for('reports.generate') }}" method="POST" style="display: flex; gap: 0.5rem; align-items: center;">
+        <select name="month" class="form-control" style="width: auto; padding: 0.25rem;">
+            {% for m in range(1, 13) %}
+                <option value="{{ m }}">Month {{ m }}</option>
+            {% end for %}
+        </select>
+        <select name="year" class="form-control" style="width: auto; padding: 0.25rem;">
+            {% for y in range(2020, 2030) %}
+                <option value="{{ y }}" {% if y == 2026 %}selected{% endif %}>{{ y }}</option>
+            {% end for %}
+        </select>
+        <button type="submit" class="btn btn-primary">Generate Report</button>
+    </form>
+</div>
+
+<div class="card">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Period</th>
+                <th>Income</th>
+                <th>Expenses</th>
+                <th>Savings</th>
+                <th>Savings Rate</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for report in reports %}
+            <tr>
+                <td>{{ report.month }}/{{ report.year }}</td>
+                <td style="color: var(--success);">₹{{ "%.2f"|format(report.total_income) }}</td>
+                <td style="color: var(--danger);">₹{{ "%.2f"|format(report.total_expenses) }}</td>
+                <td>₹{{ "%.2f"|format(report.total_savings) }}</td>
+                <td>{{ "%.1f"|format(report.savings_rate) }}%</td>
+                <td>
+                    <a href="{{ url_for('reports.view', id=report.id) }}" class="btn btn-secondary btn-sm">View</a>
+                </td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="6" class="text-center">No reports generated yet.</td>
+            </tr>
+            {% end for %}
+        </tbody>
+    </table>
+</div>
+{% end block %}

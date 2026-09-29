@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% block title %}Report - {{ report.month }}/{{ report.year }}{% end block %}
+
+{% block content %}
+<div class="dashboard-header" style="display: flex; justify-content: space-between; align-items: center;">
+    <div>
+        <h2>Financial Report</h2>
+        <p>Period: {{ report.month }}/{{ report.year }} | Generated on: {{ report.created_at.strftime('%Y-%m-%d %H:%M') }}</p>
+    </div>
+    <div>
+        <a href="{{ url_for('reports.index') }}" class="btn btn-secondary">Back to Reports</a>
+        <button onclick="window.print()" class="btn btn-primary">Print</button>
+    </div>
+</div>
+
+<div class="dashboard-widgets">
+    <div class="widget">
+        <h3>Total Income</h3>
+        <p class="amount" style="color: var(--success);">₹{{ "%.2f"|format(report.total_income) }}</p>
+    </div>
+    <div class="widget">
+        <h3>Total Expenses</h3>
+        <p class="amount" style="color: var(--danger);">₹{{ "%.2f"|format(report.total_expenses) }}</p>
+    </div>
+    <div class="widget">
+        <h3>Total Savings</h3>
+        <p class="amount">₹{{ "%.2f"|format(report.total_savings) }}</p>
+    </div>
+    <div class="widget">
+        <h3>Savings Rate</h3>
+        <p class="amount">{{ "%.1f"|format(report.savings_rate) }}%</p>
+    </div>
+</div>
+
+<div class="card" style="margin-top: 2rem;">
+    <h3>AI Financial Summary</h3>
+    <p>{{ report.generated_summary }}</p>
+</div>
+
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 2rem;">
+    <div class="card">
+        <h3>Category Breakdown</h3>
+        <ul style="list-style-type: none; padding: 0;">
+            {% for cat, amt in cat_expenses.items() %}
+                <li style="padding: 0.5rem; border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between;">
+                    <span>{{ cat }}</span>
+                    <strong>₹{{ "%.2f"|format(amt) }}</strong>
+                </li>
+            {% end for %}
+        </ul>
+    </div>
+    <div class="card">
+        <h3>Budget Performance</h3>
+        <ul style="list-style-type: none; padding: 0;">
+            {% for b in budgets %}
+                <li style="padding: 0.5rem; border-bottom: 1px solid var(--border-color);">
+                    <div style="display: flex; justify-content: space-between;">
+                        <span>{{ b.category }}</span>
+                        <span style="color: {% if b.is_over %}var(--danger){% else %}var(--success){% endif %};">
+                            {{ "%.1f"|format((b.spent / b.budgeted * 100) if b.budgeted > 0 else 0) }}% Used
+                        </span>
+                    </div>
+                </li>
+            {% end for %}
+        </ul>
+    </div>
+</div>
+
+<style>
+    @media print {
+        .navbar, .btn { display: none !important; }
+        body { background-color: white; }
+        .card { box-shadow: none; border: 1px solid #ddd; }
+    }
+</style>
+{% end block %}
