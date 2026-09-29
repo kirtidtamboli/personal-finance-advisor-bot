@@ -6,6 +6,8 @@
     <title>{% block title %}Personal Finance Advisor{% endblock %} - PFA</title>
     <!-- Use a modern font -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="{{ url_for('static', filename='favicon.svg') }}">
     <!-- Link to custom CSS -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
@@ -13,7 +15,20 @@
     <nav class="navbar">
         <div class="nav-container">
             <a href="{{ url_for('dashboard.index') }}" class="nav-logo">Finance Advisor</a>
-            <div class="nav-links">
+            
+            <div style="display: flex; align-items: center; gap: 1rem;">
+                <button id="theme-toggle" class="theme-toggle" title="Toggle Dark Mode">
+                    <!-- Icon will be inserted by JS -->
+                    ☀️
+                </button>
+                <button class="mobile-toggle" id="mobile-toggle">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+
+            <div class="nav-links" id="nav-links">
                 {% if current_user.is_authenticated %}
                     <a href="{{ url_for('dashboard.main_dashboard') }}">Dashboard</a>
                     <a href="{{ url_for('income.index') }}">Income</a>
@@ -48,5 +63,44 @@
     <footer>
         <p>&copy; 2026 Personal Finance Advisor Bot.</p>
     </footer>
+
+    <script>
+        // Theme Toggle Logic
+        const themeToggle = document.getElementById('theme-toggle');
+        const body = document.body;
+        
+        // Check local storage for theme preference
+        const currentTheme = localStorage.getItem('theme');
+        if (currentTheme === 'dark') {
+            body.classList.add('dark-theme');
+            themeToggle.innerHTML = '🌙';
+        }
+
+        themeToggle.addEventListener('click', () => {
+            body.classList.toggle('dark-theme');
+            if (body.classList.contains('dark-theme')) {
+                localStorage.setItem('theme', 'dark');
+                themeToggle.innerHTML = '🌙';
+            } else {
+                localStorage.setItem('theme', 'light');
+                themeToggle.innerHTML = '☀️';
+            }
+        });
+
+        // Mobile Menu Logic
+        const mobileToggle = document.getElementById('mobile-toggle');
+        const navLinks = document.getElementById('nav-links');
+
+        mobileToggle.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+        });
+
+        // Close menu when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!navLinks.contains(e.target) && !mobileToggle.contains(e.target) && navLinks.classList.contains('active')) {
+                navLinks.classList.remove('active');
+            }
+        });
+    </script>
 </body>
 </html>
