@@ -86,6 +86,9 @@ To run a local public demo:
 2. In a separate terminal run: `ngrok http 5000`
 3. Access via the provided `https://*.ngrok.io` link.
 
+## Demo Video Link
+https://drive.google.com/file/d/1IWzu3noswOBVfgx4LeuFMykp4c09Y5jE/view?usp=drivesdk
+
 ## 📚 Documentation
 For detailed insights into design decisions, see the `docs/` folder:
 - [Architecture](docs/architecture.md)
