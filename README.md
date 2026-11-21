@@ -3,6 +3,7 @@
 An AI-powered personal finance management platform that helps individuals manage income, expenses, budgets, savings, financial goals, analytics, and receive AI-powered financial recommendations.
 
 **GitHub Repository:** [https://github.com/kirtidtamboli/personal-finance-advisor-bot](https://github.com/kirtidtamboli/personal-finance-advisor-bot)
+
    **Live Demo:** [https://drive.google.com/file/d/1IWzu3noswOBVfgx4LeuFMykp4c09Y5jE/view?usp=drivesdk]
 
 ## 📊 Project Metrics
